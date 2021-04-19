@@ -17,10 +17,6 @@ import json
 bot = commands.Bot(intents=discord.Intents.all(), command_prefix = '!')
 slash = SlashCommand(bot, sync_commands=True)
 
-# list of guilds
-guild_ids = [722932395682168913,746398170325581835]
-
-
 @bot.event
 async def on_ready():
     print('READY')
@@ -72,15 +68,14 @@ async def on_message(message: discord.Message):
 
 
 @slash.slash(name = 'ping',
-    description ='see bot latency', 
-    guild_ids=guild_ids)
+    description ='see bot latency'
+    )
 async def _ping(ctx):
     await ctx.send(f'Pong! **{round(bot.latency*1000, 2)}ms**') 
 
 
 @slash.slash(name = 'say', 
-    description ='make the bot repeat what you say', 
-    guild_ids=guild_ids,
+    description ='make the bot repeat what you say',
     options = [
         create_option(
             name = 'message', 
@@ -106,8 +101,8 @@ async def _say(ctx, message: str, delete: bool):
 
 
 @slash.slash(name = 'invite', 
-description = 'get the bot invite link',
-guild_ids=guild_ids,)
+description = 'get the bot invite link'
+)
 async def _invite(ctx):
     link ='https://discord.com/oauth2/authorize?client_id=730879866026590229&permissions=4294967287&scope=applications.commands%20bot'
     embed = discord.Embed(

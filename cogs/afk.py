@@ -11,7 +11,6 @@ from discord_slash.utils.manage_commands import create_option
 import random
 import json
 
-guild_ids = [722932395682168913,746398170325581835]
 
 class Stocks(commands.Cog):
 
@@ -21,7 +20,6 @@ class Stocks(commands.Cog):
     @cog_ext.cog_slash(
         name = 'afk',
         description = 'let others know you are afk',
-        guild_ids = guild_ids,
         options = [
             create_option(
                 name = 'reason',

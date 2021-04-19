@@ -12,7 +12,6 @@ import requests
 from dotenv import load_dotenv
 from datetime import datetime
 
-guild_ids = [722932395682168913,746398170325581835]
 
 class Stocks(commands.Cog):
 
@@ -23,7 +22,6 @@ class Stocks(commands.Cog):
     @cog_ext.cog_slash(
         name = 'stocks',
         description ='find the action price of a stock and additional information',
-        guild_ids =guild_ids,
         options = [
             create_option(
                 name = 'symbol',

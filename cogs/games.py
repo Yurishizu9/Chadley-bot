@@ -6,7 +6,6 @@ from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option, create_choice
 
-guild_ids = [722932395682168913,746398170325581835]
 
 class Games(commands.Cog):
 
@@ -17,7 +16,6 @@ class Games(commands.Cog):
     @cog_ext.cog_slash(
         name = 'rps',
         description ='play rock, paper, scissors against me',
-        guild_ids =guild_ids,
         options=[
             create_option(
                 name='hand',
@@ -60,7 +58,6 @@ class Games(commands.Cog):
     @cog_ext.cog_slash(
         name = 'lfg',
         description = 'looking for game',
-        guild_ids = guild_ids,
         options = [
             create_option(
                 name = 'game',
