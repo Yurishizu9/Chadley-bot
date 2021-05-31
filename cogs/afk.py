@@ -12,10 +12,11 @@ import random
 import json
 
 
-class Stocks(commands.Cog):
+class Afk(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+
 
     @cog_ext.cog_slash(
         name = 'afk',
@@ -181,4 +182,4 @@ class Stocks(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Stocks(bot))
+    bot.add_cog(Afk(bot))

@@ -1,0 +1,6 @@
+PyGithub
+bs4
+python-dotenv
+discord-py-slash-command
+discord.py
+selenium

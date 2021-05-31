@@ -60,14 +60,14 @@ class Games(commands.Cog):
         description = 'looking for game',
         options = [
             create_option(
-                name = 'game',
-                description = 'name of the game you are playing',
+                name = 'message',
+                description = 'description',
                 option_type=3,
                 required = False
             ),
             create_option(
-                name = 'message',
-                description = 'description',
+                name = 'game',
+                description = 'name of the game you are playing',
                 option_type=3,
                 required = False
             )])

@@ -34,7 +34,6 @@ async def on_message(message: discord.Message):
 
         ''' check if user is in afk_list, then removes them'''
         user = message.author
-        print(message)
         server_id = str(message.author.guild.id)
         user_id = str(user.id)
         if server_id in json_obj:
