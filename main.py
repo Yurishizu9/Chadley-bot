@@ -85,17 +85,24 @@ async def _ping(ctx):
         create_option(
             name = 'delete', 
             description = 'delete original message',
-            option_type = 5,
-            required = False
-        )
-    ])
-async def _say(ctx, message: str, delete: bool):
-    if delete:
-
+            option_type = 3,
+            required = False,
+            choices=[
+                create_choice(
+                    name = 'yes', 
+                    value = 'yes'
+                ),
+                create_choice(
+                    name = 'no', 
+                    value = 'no'
+                )
+    ])])
+async def _say(ctx, message: str, delete = 'no'):
+    if delete == 'yes':
         msg = await ctx.send(content ='please wait...')
         await msg.delete()
         await ctx.channel.send(f'{message}')
-    else:
+    elif delete == 'no':
         await ctx.send(f'{message}')
 
 
