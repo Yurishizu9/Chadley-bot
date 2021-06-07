@@ -132,7 +132,7 @@ class Anime(commands.Cog):
                 anime_detail = anime.get_anime_details(anime_id)
                 
                 # format synopsis and genre and alternative name
-                synopsis = '' if 'No synopsis information has been added to this title' in anime_detail["plot_summary"] else f'```{anime_detail["plot_summary"][:200]}...```'
+                synopsis = '' if 'No synopsis information has been added to this title' in anime_detail["plot_summary"] else f'```{anime_detail["plot_summary"][1:200]}...```'
                 genres = anime_detail["genre"].replace('[', "").replace(']', '').replace("'", "")
                 alt_name = anime_detail["other_names"].replace('Other name: ', '')
 
@@ -256,9 +256,7 @@ class Anime(commands.Cog):
                             
                             try:
                                 reaction, user = await self.bot.wait_for('reaction_add', timeout = 1800.0, check = reaction_checker)
-                                print('reaction check completed', reaction, user)
                                 if reaction.emoji == '◀':
-                                    print('went back')
                                     episode_num -= 1
                                     await msg_results2.clear_reactions()
                                     await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/VIDEO%20LOADING.gif')
@@ -267,7 +265,6 @@ class Anime(commands.Cog):
 
                                 
                                 if reaction.emoji == '▶':
-                                    print('went forward')
                                     episode_num += 1
                                     await msg_results2.clear_reactions()
                                     await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/VIDEO%20LOADING.gif')
@@ -278,7 +275,7 @@ class Anime(commands.Cog):
                                 await msg_results2.clear_reactions()
                                 await msg_results2.edit(embed = embed.set_footer(text = 'UwU' + '  ' * 65 + f'\nENJOY YOUR SESSION セッションをお楽しみください'))
                                 break
-                        break
+                            break
 
 
 
