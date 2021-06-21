@@ -114,7 +114,7 @@ class Anime(commands.Cog):
             anime_id = None
             while True:
                 try:
-                    user_msg = await self.bot.wait_for('message', timeout = 15.0, check = msg_checker)
+                    user_msg = await self.bot.wait_for('message', timeout = 60.0, check = msg_checker)
                     if int_checker(user_msg.content) and int(user_msg.content) <= len(anime_search_result):
                         # get the animeid of the selected anime
                         anime_id = anime_search_result[int(user_msg.content) - 1]["animeid"]
@@ -151,7 +151,7 @@ class Anime(commands.Cog):
 
                 while True:
                     try: 
-                        user_msg2 = await self.bot.wait_for('message', timeout = 15.0, check = msg_checker)
+                        user_msg2 = await self.bot.wait_for('message', timeout = 60.0, check = msg_checker)
                         if int_checker(user_msg2.content) and int(user_msg2.content) <= int(anime_detail["episodes"]):
                             episode_num = int(user_msg2.content)
                             await user_msg2.delete()
@@ -177,14 +177,14 @@ class Anime(commands.Cog):
                 #try get the best video link
                 try:
                     video_src = anime.get_episodes_link(anime_id, episode_num)["(HDP-mp4)"]
-                    ep_quality = 'HD'
+                    ep_quality = '⭐HD'
                 except KeyError:
                     video_src = None
                     episode_num = None
                     await msg_results2.delete()
                     embed = discord.Embed(
                         title = '💔  i bwoke something',
-                        description = f'```text\newwow message:\ncouwd nyot get video wink fow {anime_detail["title"]} episode {episode_num}\n\ncommand + options:\n/anime {user_msg.content} {user_msg2.content} ```',
+                        description = f'```text\newwow message:\ncouwd nyot get video wink fow {anime_detail["title"]} episode {episode_num}\n\ncommand + options:\n/anime {title} {user_msg.content} {user_msg2.content} ```',
                         color = 0x2F3136)
                     bot_owner = await self.bot.fetch_user(240566530239234049)
                     embed.set_footer(text = 'send this error message to Yurishizu#1702', icon_url = bot_owner.avatar_url )
@@ -193,19 +193,19 @@ class Anime(commands.Cog):
                     '''
                     try:
                         video_src = anime.get_episodes_link(anime_id, episode_num)["(1080P-mp4)"]
-                        ep_quality = '1080P'
+                        ep_quality = '⭐1080P'
                     except KeyError:
                         try:
                             video_src = anime.get_episodes_link(anime_id, episode_num)["(720P-mp4)"]
-                            ep_quality = '720P'
+                            ep_quality = '⭐720P'
                         except KeyError:
                             try:
                                 video_src = anime.get_episodes_link(anime_id, episode_num)["(480P-mp4)"]
-                                ep_quality = '480P'
+                                ep_quality = '⭐480P'
                             except KeyError:
                                 try:
                                     video_src = anime.get_episodes_link(anime_id, episode_num)["(360P-mp4)"]
-                                    ep_quality = '360P'
+                                    ep_quality = '⭐360P'
                                 except KeyError: # no video links found, stop loop and send an error message
                     '''                
 
@@ -229,7 +229,7 @@ class Anime(commands.Cog):
                             <video width="100%" controls autoplay>
                                 <source src="{video_src}" type="video/mp4">
                             </video>
-                            <h1 style = "color: white; font-family: 'KaushanScriptRegular', verdana;">{anime_detail["title"]} ・ Episode {episode_num} ⭐{ep_quality}</h1>
+                            <h1 style = "color: white; font-family: 'KaushanScriptRegular', verdana;">{anime_detail["title"]} ・ Episode {episode_num} {ep_quality}</h1>
                         </body>
                     </html>
                     '''
@@ -251,13 +251,19 @@ class Anime(commands.Cog):
 
                     # show video player
                     while True: 
-                        time.sleep(5)
-                        embed=discord.Embed(description = '```text\n◀ previous episode     前のエピソード\n▶ next episode         次のエピソード\n```', color=0x2F3136)
+                        
+                        # set up embed
+                        if int(anime_detail["episodes"]) == 1:
+                            embed = discord.Embed(description = '```text\nENJOY YOUR SESSION                  \nセッションをお楽しみください\n\n\n```', color=0x2F3136)
+                        else:
+                            embed = discord.Embed(description = '```text\n◀ previous episode     前のエピソード\n▶ next episode         次のエピソード\n```', color=0x2F3136)
                         embed.set_thumbnail(url = anime_detail["image_url"])
-                        #embed.set_footer(text = '')
-                        await msg_results2.edit(content = f'**`{anime_detail["title"]}`  `📺 Episode: {episode_num}`  `⭐{ep_quality}`**' , embed = embed)
+                        
+                        # send the embed
+                        time.sleep(5)
+                        await msg_results2.edit(content = f'**`{anime_detail["title"]}`  `📺 Episode: {episode_num}`  `{ep_quality}`**' , embed = embed)
                         await msg_results.edit(content = f'https://anim-e.tk/videos/{html_name}')
-                        time.sleep(1)
+                        time.sleep(1.5)
 
                         # break while loop if video player loads up
                         if msg_results.embeds:
@@ -301,15 +307,12 @@ class Anime(commands.Cog):
 
                         except:
                             await msg_results2.clear_reactions()
-                            await msg_results2.edit(embed = embed.set_footer(text = '\nENJOY YOUR SESSION セッションをお楽しみください'))
+                            embed = discord.Embed(description = '```text\nENJOY YOUR SESSION                  \nセッションをお楽しみください\n\n\n```', color=0x2F3136)
+                            embed.set_thumbnail(url = anime_detail["image_url"])
+                            await msg_results2.edit(embed = embed)
                             episode_num = None
                             break
                 
-        print('end of')
-
-
-
-
 
 def int_checker(num):
     '''check if input is a whole number'''
