@@ -224,8 +224,8 @@ class Anime(commands.Cog):
                                 color=0x2F3136)
                             embed.set_thumbnail(url = anime_detail["image_url"])
                             embed.set_footer(text = '◀ previous episode'+'  '*51+'\n◀ 前のエピソード\n▶ next episode\n▶ 次のエピソード')
-                            await msg_results.edit(content = f'https://anim-e.tk/videos/{html_name}')
                             await msg_results2.edit(content = None, embed = embed)
+                            await msg_results.edit(content = f'https://anim-e.tk/videos/{html_name}')
 
                             # break while loop if video player loads up
                             if msg_results.embeds:
@@ -275,7 +275,7 @@ class Anime(commands.Cog):
                                 await msg_results2.clear_reactions()
                                 await msg_results2.edit(embed = embed.set_footer(text = 'UwU' + '  ' * 65 + f'\nENJOY YOUR SESSION セッションをお楽しみください'))
                                 break
-                            break
+                        break
 
 
 

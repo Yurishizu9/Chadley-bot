@@ -18,7 +18,7 @@ print(f'\n{json.dumps(anime_detail, indent=4)}\n')
 
 
 # pick episode
-episode_num = int(input(f'eneter an episode number between (0-{anime_detail["episodes"]}): '))
+episode_num = int(input(f'eneter an episode number between (1-{anime_detail["episodes"]}): '))
 anime_link = anime.get_episodes_link(animeid, episode_num)
 print(json.dumps(anime_link, indent=4))
 
