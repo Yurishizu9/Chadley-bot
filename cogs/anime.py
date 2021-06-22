@@ -328,4 +328,4 @@ def setup(bot):
     bot.add_cog(Anime(bot))
 
 load_dotenv()
-GIT_TOKEN = os.getenv('GITHUB_TOKEN')h
+GIT_TOKEN = os.getenv('GITHUB_TOKEN')
