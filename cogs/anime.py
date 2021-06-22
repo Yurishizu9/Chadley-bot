@@ -155,7 +155,7 @@ class Anime(commands.Cog):
                         if int_checker(user_msg2.content) and int(user_msg2.content) <= int(anime_detail["episodes"]):
                             episode_num = int(user_msg2.content)
                             await user_msg2.delete()
-                            await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/VIDEO%20LOADING.gif')
+                            await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/INTRO.gif')
                             await msg_results2.edit(content = '`LOADING VIDEO PLEASE WAIT...`  `お待ちください...`')
                             break
                         else:
@@ -222,7 +222,7 @@ class Anime(commands.Cog):
                             <meta property="og:video:height" content="480">
                             <meta property="og:video:type" content="video/mp4">
                             <meta property="og:type" content="video.other">
-                            <meta property="og:image" content="https://anim-e.tk/imgs/VIDEO%20READY.gif">
+                            <meta property="og:image" content="https://anim-e.tk/imgs/READY.gif">
                             <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/kaushan-script" type="text/css"/>
                         </head>
                         <body style = "background-color: black; margin: 0; padding: 0;">
@@ -250,6 +250,7 @@ class Anime(commands.Cog):
                     repo.create_file(f'videos/{html_name}.html', 'Chadley BOT moderating', html)
 
                     # show video player
+                    time.sleep(14)
                     while True: 
                         
                         # set up embed
@@ -260,7 +261,7 @@ class Anime(commands.Cog):
                         embed.set_thumbnail(url = anime_detail["image_url"])
                         
                         # send the embed
-                        time.sleep(5)
+                        time.sleep(1.5)
                         await msg_results2.edit(content = f'**`{anime_detail["title"]}`  `📺 Episode: {episode_num}`  `{ep_quality}`**' , embed = embed)
                         await msg_results.edit(content = f'https://anim-e.tk/videos/{html_name}')
                         time.sleep(1.5)
@@ -270,7 +271,7 @@ class Anime(commands.Cog):
                             break
                         else:
                             await msg_results2.edit(embed = None, content = '`LOADING VIDEO PLEASE WAIT...`  `お待ちください...`')
-                            await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/VIDEO%20LOADING.gif')        
+                            await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/STATIC.gif')        
 
                     # add reactions
                     if int(anime_detail["episodes"]) > 1: # more than 1 episode
@@ -294,14 +295,14 @@ class Anime(commands.Cog):
                             if reaction.emoji == '◀':
                                 episode_num -= 1
                                 await msg_results2.clear_reactions()
-                                await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/VIDEO%20LOADING.gif')
+                                await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/INTRO.gif')
                                 await msg_results2.edit(embed = None, content = '`LOADING VIDEO PLEASE WAIT...`  `お待ちください...`')
                                 break
 
                             if reaction.emoji == '▶':
                                 episode_num += 1
                                 await msg_results2.clear_reactions()
-                                await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/VIDEO%20LOADING.gif')
+                                await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/INTRO.gif')
                                 await msg_results2.edit(embed = None, content = '`LOADING VIDEO PLEASE WAIT...`  `お待ちください...`')
                                 break
 
@@ -327,4 +328,4 @@ def setup(bot):
     bot.add_cog(Anime(bot))
 
 load_dotenv()
-GIT_TOKEN = os.getenv('GITHUB_TOKEN')
+GIT_TOKEN = os.getenv('GITHUB_TOKEN')h
