@@ -88,10 +88,34 @@ class gogoanime():
             soup = BeautifulSoup(plainText, "lxml")
             source_url = soup.find("li", {"class": "dowloads"}).a
             vidstream_link = source_url.get('href')
-            # print(vidstream_link)
+            # ---- cloudflare bypass ----------
             URL = vidstream_link
-            dowCode = requests.get(URL)
+            import cloudscraper
+            import helheim
+            from dotenv import load_dotenv # reads env. file
+            import os
+            load_dotenv()
+            HELHEIM_KEY = os.getenv('HELHEIM_KEY')
+            helheim.auth(HELHEIM_KEY)
+            def injection(session, response):
+                if helheim.isChallenge(session, response):
+                    return helheim.solve(session, response)
+                else:
+                    return response
+            session = cloudscraper.create_scraper(
+                browser={
+                    'browser': 'chrome', # we want a chrome user-agent
+                    'mobile': False, # pretend to be a desktop by disabling mobile user-agents
+                    'platform': 'windows' # pretend to be 'windows' or 'darwin' by only giving this type of OS for user-agents
+                },
+                requestPostHook=injection,
+                captcha={
+                    'provider' : 'vanaheim'
+                })
+            dowCode = session.get(URL)
             data = dowCode.text
+            # ---- cloudflare bypass ----------
+            #print(data)
             soup = BeautifulSoup(data, "lxml")
             dow_url= soup.findAll('div',{'class':'dowload'})
             episode_res_link = {'title':f"{tit_url}"}
