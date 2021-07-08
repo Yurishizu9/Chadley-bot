@@ -13,6 +13,7 @@ import os
 from github import Github 
 import random
 import time
+import requests
 
 
 def genres1():
@@ -179,18 +180,6 @@ class Anime(commands.Cog):
                     video_src = anime.get_episodes_link(anime_id, episode_num)["(HDP-mp4)"]
                     ep_quality = '⭐HD'
                 except KeyError:
-                    video_src = None
-                    episode_num = None
-                    await msg_results2.delete()
-                    embed = discord.Embed(
-                        title = '💔  i bwoke something',
-                        description = f'```text\newwow message:\ncouwd nyot get video wink fow {anime_detail["title"]} episode {episode_num}\n\ncommand + options:\n/anime {title} {user_msg.content} {user_msg2.content} ```',
-                        color = 0x2F3136)
-                    bot_owner = await self.bot.fetch_user(240566530239234049)
-                    embed.set_footer(text = 'send this error message to Yurishizu#1702', icon_url = bot_owner.avatar_url )
-                    await msg_results.edit(content = None, embed = embed)
-
-                    '''
                     try:
                         video_src = anime.get_episodes_link(anime_id, episode_num)["(1080P-mp4)"]
                         ep_quality = '⭐1080P'
@@ -207,10 +196,25 @@ class Anime(commands.Cog):
                                     video_src = anime.get_episodes_link(anime_id, episode_num)["(360P-mp4)"]
                                     ep_quality = '⭐360P'
                                 except KeyError: # no video links found, stop loop and send an error message
-                    '''                
+                                    video_src = None
+                                    episode_num = None
+                                    await msg_results2.delete()
+                                    embed = discord.Embed(
+                                        title = '💔  i bwoke something',
+                                        description = f'```text\nerror:\nno video links\nmessage:\ncouwd nyot get video wink fow {anime_detail["title"]} episode {episode_num}\n\ncommand + options:\n/anime {title} {user_msg.content} {user_msg2.content} ```',
+                                        color = 0x2F3136)
+                                    bot_owner = await self.bot.fetch_user(240566530239234049)
+                                    embed.set_footer(text = 'send this error message to Yurishizu#1702', icon_url = bot_owner.avatar_url )
+                                    await msg_results.edit(content = None, embed = embed)               
 
                 # successfully have a video link       
-                if video_src:                    
+                if video_src:
+                    
+                    # fixes 
+                    if 'php?url' in video_src:
+                        req = requests.head(video_src)
+                        video_src = req.headers["Location"]
+
                     html = f'''
                     <!DOCTYPE html>
                     <html>

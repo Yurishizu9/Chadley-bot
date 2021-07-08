@@ -30,6 +30,11 @@ scraper = cloudscraper.create_scraper(
   captcha={
     'provider': '2captcha',
     'api_key': '86cf45f835d902c1e12896f8e4384b60'
-  }
-)
-print(scraper.get("https://soap2day.cc/search/keyword/harry").text)
+  })
+print('hey')
+import requests
+url = 'https://cdn2.cloud9xx.com/user1342/c2c793835d1264cb7a5773e2de1fa3f4/EP.1.1080p.mp4?token=JarxdPTVBzX7IBvQObtQAg&expires=1625844454&id=99211'
+
+resp = requests.head(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'})
+print(resp.headers)
+print(resp.cookies)
