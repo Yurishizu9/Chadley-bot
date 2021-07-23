@@ -6,3 +6,4 @@ discord.py
 selenium
 requests-html
 cloudscraper
+polling2

@@ -92,6 +92,7 @@ class gogoanime():
             URL = vidstream_link
             import cloudscraper
             import helheim
+            from helheim.exceptions import HelheimSolveError
             from dotenv import load_dotenv # reads env. file
             import os
             load_dotenv()
@@ -109,10 +110,14 @@ class gogoanime():
                     'platform': 'windows' # pretend to be 'windows' or 'darwin' by only giving this type of OS for user-agents
                 },
                 requestPostHook=injection,
-                captcha={
-                    'provider' : 'vanaheim'
-                })
-            dowCode = session.get(URL)
+                    captcha={
+                        'provider': 'capmonster',
+                        'clientKey': '73af033c4fd089a25519eda30f53981f'
+                    })
+            try:
+                dowCode = session.get(URL)
+            except HelheimSolveError:
+                return {"status":"429", "reason":"Failed to Solve, Max tries reached -> 5"}
             data = dowCode.text
             # ---- cloudflare bypass ----------
             #print(data)
@@ -128,6 +133,7 @@ class gogoanime():
                 str_original = ""
                 quality_name = str_original.join(str_spl)
                 episode_res_link.update({f"{quality_name}":f"{downlink}"})
+            #print(episode_res_link)
             return episode_res_link
         except AttributeError:
             return {"status":"400", "reason":"Invalid animeid or episode_num"}

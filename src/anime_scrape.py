@@ -2,6 +2,8 @@ from cloudscraper.user_agent import User_Agent
 from gogoanimeapi import gogoanime as anime
 import json
 
+
+'''
 querry = input('search for an anime: ')
 anime_search = anime.get_search_results(querry)
 print(anime_search)
@@ -59,5 +61,10 @@ session = cloudscraper.create_scraper(
 )
 
 
-print(session.get(url).text)
-'''
+print(session.get(
+    'https://sbplay.org/d/7kug3pyk56x0.html',
+    headers={'Accept-Encoding': 'identity;q=1, *;q=0',
+	'Range': 'bytes=0-',
+	'Referer': 'https://anim-e.tk/',
+	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+    ).text)

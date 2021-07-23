@@ -90,6 +90,7 @@ class Anime(commands.Cog):
                 await ctx.send(f'No search results found for `{title}`' )
             if anime_search_result["status"] == '404':
                 await ctx.send(f'I\'m having connection issues... please try again later...' )
+            
         else:
             # organise anime results
             counter = 1
@@ -156,13 +157,13 @@ class Anime(commands.Cog):
                         if int_checker(user_msg2.content) and int(user_msg2.content) <= int(anime_detail["episodes"]):
                             episode_num = int(user_msg2.content)
                             await user_msg2.delete()
-                            await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/INTRO.gif')
-                            await msg_results2.edit(content = '`LOADING VIDEO PLEASE WAIT...`  `お待ちください...`')
+                            await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/LOADING.gif')
+                            await msg_results2.edit(content = '`ANTIBOT VERIFICATION (Captcha)...`  `アンチボット検証 (Captcha)...`')
                             break
                         else:
                             await msg_results2.edit(content = '`‼INVALID NUMBER try again...`  `再試行...`')
                             await user_msg2.delete()
-                            await msg_results2.edit(content = '`👇ENTER EPISODE NUMBER BELOW`  `エピソード番号を入力`')  
+                            await msg_results2.edit(content = '`👇ENTER __EPISODE__ NUMBER BELOW`  `エピソード番号を入力`')  
 
                     except:
                         episode_num = None
@@ -176,41 +177,64 @@ class Anime(commands.Cog):
             while episode_num:
                 
                 #try get the best video link
-                try:
-                    video_src = anime.get_episodes_link(anime_id, episode_num)["(HDP-mp4)"]
-                    ep_quality = '⭐HD'
+                ep_links = anime.get_episodes_link(anime_id, episode_num)
+                video_src = None
+                
+                try: 
+                    video_src = ep_links["status"]
+                    await msg_results2.delete()
+                    embed = discord.Embed(
+                        title = '💔  \*sigh\*',
+                        description = f'```Could not fetch episode for {anime_detail["title"]} episode {episode_num}. Captcha challenge failed to Solve, Max tries reached -> 5\n\ncommand + options:\n/anime {title} {user_msg.content} {user_msg2.content} ```',
+                        color = 0x2F3136)
+                    bot_owner = await self.bot.fetch_user(240566530239234049)
+                    embed.set_footer(text = 'contact Yurishizu#1702 if you get this error again ', icon_url = bot_owner.avatar_url )
+                    await msg_results.edit(content = None, embed = embed)  
                 except KeyError:
+                    
                     try:
-                        video_src = anime.get_episodes_link(anime_id, episode_num)["(1080P-mp4)"]
-                        ep_quality = '⭐1080P'
-                    except KeyError:
+                        video_src = ep_links["(HDP-mp4)"]
+                        ep_quality = '⭐HD'
+                    except KeyError: 
+                        
                         try:
-                            video_src = anime.get_episodes_link(anime_id, episode_num)["(720P-mp4)"]
-                            ep_quality = '⭐720P'
+                            video_src = ep_links["(1080P-mp4)"]
+                            ep_quality = '⭐1080P'
                         except KeyError:
+                            
                             try:
-                                video_src = anime.get_episodes_link(anime_id, episode_num)["(480P-mp4)"]
-                                ep_quality = '⭐480P'
+                                video_src = ep_links["(720P-mp4)"]
+                                ep_quality = '⭐720P'
                             except KeyError:
+                                
                                 try:
-                                    video_src = anime.get_episodes_link(anime_id, episode_num)["(360P-mp4)"]
-                                    ep_quality = '⭐360P'
-                                except KeyError: # no video links found, stop loop and send an error message
-                                    video_src = None
-                                    episode_num = None
-                                    await msg_results2.delete()
-                                    embed = discord.Embed(
-                                        title = '💔  i bwoke something',
-                                        description = f'```text\nerror:\nno video links\nmessage:\ncouwd nyot get video wink fow {anime_detail["title"]} episode {episode_num}\n\ncommand + options:\n/anime {title} {user_msg.content} {user_msg2.content} ```',
-                                        color = 0x2F3136)
-                                    bot_owner = await self.bot.fetch_user(240566530239234049)
-                                    embed.set_footer(text = 'send this error message to Yurishizu#1702', icon_url = bot_owner.avatar_url )
-                                    await msg_results.edit(content = None, embed = embed)               
+                                    video_src = ep_links["(480P-mp4)"]
+                                    ep_quality = '⭐480P'
+                                except KeyError:
+                                    
+                                    try:
+                                        video_src = ep_links["(360P-mp4)"]
+                                        ep_quality = '⭐360P'
+                                    except KeyError: # no video links found, stop loop and send an error message
+                                        await msg_results2.delete()
+                                        embed = discord.Embed(
+                                            title = '💔  i bwoke something',
+                                            description = f'```Appropiate video link for episode {episode_num} of {anime_detail["title"]} was not found.\n\ncommand + options:\n/anime {title} {user_msg.content} {user_msg2.content} ```',
+                                            color = 0x2F3136)
+                                        bot_owner = await self.bot.fetch_user(240566530239234049)
+                                        embed.set_footer(text = 'contact Yurishizu#1702 if you get this error again', icon_url = bot_owner.avatar_url )
+                                        await msg_results.edit(content = None, embed = embed)
+                                        video_src = None
+                                        episode_num = None            
 
                 # successfully have a video link       
                 if video_src:
+
+                    # change message to loading
+                    await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/INTRO.gif')
+                    await msg_results2.edit(content = '`LOADING VIDEO PLEASE WAIT...`  `お待ちください...`')
                     
-                    # fixes 
+                    # gets video from php and redirects
                     if 'php?url' in video_src:
                         req = requests.head(video_src)
                         video_src = req.headers["Location"]
@@ -299,15 +323,15 @@ class Anime(commands.Cog):
                             if reaction.emoji == '◀':
                                 episode_num -= 1
                                 await msg_results2.clear_reactions()
-                                await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/INTRO.gif')
-                                await msg_results2.edit(embed = None, content = '`LOADING VIDEO PLEASE WAIT...`  `お待ちください...`')
+                                await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/LOADING.gif')
+                                await msg_results2.edit(content = '`ANTIBOT VERIFICATION (Captcha)...`  `アンチボット検証 (Captcha)...`')
                                 break
 
                             if reaction.emoji == '▶':
                                 episode_num += 1
                                 await msg_results2.clear_reactions()
-                                await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/INTRO.gif')
-                                await msg_results2.edit(embed = None, content = '`LOADING VIDEO PLEASE WAIT...`  `お待ちください...`')
+                                await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/LOADING.gif')
+                                await msg_results2.edit(content = '`ANTIBOT VERIFICATION (Captcha)...`  `アンチボット検証 (Captcha)...`')
                                 break
 
                         except:
