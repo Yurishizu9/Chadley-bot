@@ -21,8 +21,10 @@ class WB_anime():
     -------
     search(title) : `function`
         searches for anime titles and returns a list of anime results
+
     get_info(link) : `function`
         from anime link it returns information of that specific anime as a dictionary
+        
     get_video_src(ep_link) : `function`
         from episode link it returns the anime video src link
 

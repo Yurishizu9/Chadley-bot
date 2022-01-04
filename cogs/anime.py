@@ -159,6 +159,7 @@ class Anime(commands.Cog):
                             await user_msg2.delete()
                             await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/LOADING.gif')
                             await msg_results2.edit(content = '`ANTIBOT VERIFICATION (Captcha)...`  `アンチボット検証 (Captcha)...`')
+                            print(ep_links = anime.get_episodes_link(anime_id, episode_num))
                             break
                         else:
                             await msg_results2.edit(content = '`‼INVALID NUMBER try again...`  `再試行...`')
@@ -178,6 +179,7 @@ class Anime(commands.Cog):
                 
                 #try get the best video link
                 ep_links = anime.get_episodes_link(anime_id, episode_num)
+                print(ep_links)
                 video_src = None
                 
                 try: 
@@ -229,7 +231,7 @@ class Anime(commands.Cog):
 
                 # successfully have a video link       
                 if video_src:
-
+                    
                     # change message to loading
                     await msg_results.edit(embed = None, content = 'https://anim-e.tk/imgs/INTRO.gif')
                     await msg_results2.edit(content = '`LOADING VIDEO PLEASE WAIT...`  `お待ちください...`')

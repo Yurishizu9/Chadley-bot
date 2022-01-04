@@ -90,6 +90,7 @@ class gogoanime():
             vidstream_link = source_url.get('href')
             # ---- cloudflare bypass ----------
             URL = vidstream_link
+            print(URL)
             import cloudscraper
             import helheim
             from helheim.exceptions import HelheimSolveError
